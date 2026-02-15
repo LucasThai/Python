@@ -1,0 +1,264 @@
+import json
+# Chapter 10: Files and exceptions
+'''
+with open('pi_digits') as file_object:
+    contents = file_object.read()
+    contents = file_object.read()
+    print(contents)
+'''
+
+# READ LINE BY LINE
+
+'''
+file_name = 'pi_digits'
+with open(file_name) as file_object:
+   # for line in file_object:
+   #     print(line)
+    lines = file_object.readlines()
+'''
+# MAKING A LIST OF LINES FROM A FILE
+'''
+for line in lines:
+    print(line.rstrip())
+
+'''
+
+
+# 10-1
+'''
+with open('pi_digits') as f_o:
+    print(f_o.read())
+
+    f_o.seek(0)
+
+    for line in f_o:
+        print(line)
+
+    f_o.seek(0)
+
+    lines = f_o.readlines()
+    for line in lines:
+        print(line.rstrip()
+              )
+'''
+
+
+# 10-2
+'''
+with open('pi_digits') as f_o:
+    print(f_o.read().replace('Python', 'C'))
+
+    f_o.seek(0)
+
+    for line in f_o:
+        print(line.replace('Python', 'C'))
+
+    f_o.seek(0)
+
+    lines = f_o.readlines()
+    for line in lines:
+        print(line.rstrip().replace('Python', 'C')
+              )
+'''
+
+
+# WRITING TO AN EMPTY FILE
+'''
+with open('pi_digits', 'w') as f_o:
+    f_o.write("In C you can store a list\n")
+    f_o.write("Sick my Duck\n")
+    f_o.write("I want to fuck my gf\n")
+# 'w' write mode, 'r' read mode, 'a' append mode
+
+
+# appending to a file
+with open('pi_digits', 'a') as f_o:
+    f_o.write("In C you can store a list\n")
+    f_o.write("Sick my Duck\n")
+    f_o.write("I want to fuck my gf\n")
+'''
+
+# E X C E P T I O N S
+
+# Handling the ZeroDivisionError exception
+'''
+try:
+    print(5/0)
+except ZeroDivisionError:
+    print("Yo bitch u cant divide by zero!")
+'''
+'''
+print("Gimme 2 numbers, and I'll divide them")
+print("Press 'q' to quit")
+
+while True:
+    first_nber = input("\nFirst number: ").strip().lower()
+    sec_nber = input("\nSecond number: ").strip().lower()
+    if first_nber == 'q' or sec_nber == 'q':
+        break
+    try:
+        answer = int(first_nber) / int(sec_nber)
+    except ZeroDivisionError:
+        print("Idiot? u cant divide by zero")
+    else:
+        print(answer)
+'''
+
+
+# Handling the FileNotFoundError exception
+'''
+file = 'alice'
+try:
+    with open(file, encoding='utf-8') as f:
+        contents = f.read()
+except FileNotFoundError:
+    print(f"File {file} does not exist")
+'''
+
+# Analyzing text
+'''
+file = 'alice'
+try:
+    with open(file, encoding='utf-8') as f:
+        contents = f.read()
+except FileNotFoundError:
+    print(f"file {file} does not exist")
+else:
+    # "Alice in wonderland".split() -> ['Alice','in', 'Wonderland']
+    # words = contents.split() counts words only
+    # num_words = len(words)
+
+    num_words = len(contents)  # counts everything
+    print(f"file {file} has about {num_words} words")
+
+'''
+# Working with multiple file
+
+'''
+def count_words(file_name):
+    try:
+        with open(file_name, encoding='utf-8') as f:
+            contents = f.read()
+    except FileNotFoundError:
+        print(f"file {file_name} does not exist")
+    else:
+        # "Alice in wonderland".split() -> ['Alice','in', 'Wonderland']
+        words = contents.split()  # counts words only
+        num_words = len(words)
+        print(f"file {file_name} has about {num_words} words")
+
+
+filenames = ['alice', 'pi_digits', 'emmale']
+for filename in filenames:
+    count_words(filename)
+
+'''
+# Failing silently
+'''
+def count_words(file_name):
+    try:
+        with open(file_name, encoding='utf-8') as f:
+            contents = f.read()
+    except FileNotFoundError:
+        pass #to pass silently do nothing
+    else:
+        # "Alice in wonderland".split() -> ['Alice','in', 'Wonderland']
+        words = contents.split()  # counts words only
+        num_words = len(words)
+        print(f"file {file_name} has about {num_words} words")
+
+
+filenames = ['alice', 'pi_digits', 'emmale']
+for filename in filenames:
+    count_words(filename)
+'''
+
+# 10-10
+'''
+with open('The Project Gutenberg eBook of The kedge-anchor .txt', encoding='utf-8') as f:
+    contents = f.read().lower()
+    print(contents.count("the "))
+'''
+
+
+# Storing data
+# json.dump('files') to save
+# json.load('files') to load
+'''
+filename = 'username.json'
+try:
+    with open(filename) as f:
+        username = json.load(f)
+except FileNotFoundError:
+    username = input("Ur username: ")
+    with open(filename, 'w') as f:
+        json.dump(username, f)
+        print(f"we'll remember you when you come back, {username}!")
+else:
+    print(f"Welcome back, {username}")
+'''
+# 10-11
+'''
+data = {
+    'Name': "Anh Quan",
+    'Location': "Sydney",
+    'Interest': "Tr"
+}
+with open("fav_num.json", 'w') as f:
+    json.dump(data, f)
+
+
+with open("fav_num.json") as f:
+    contents = json.load(f)
+    print(contents)
+
+'''
+
+
+# 10-12:
+'''
+filename = 'fav_num.json'
+try:
+    with open(filename, encoding="utf-8") as f:
+        fav_number = json.load(f)
+except FileNotFoundError:
+    fav_number = int(input("Please enter your favorite number: "))
+    with open(filename, 'w') as f:
+        json.dump(fav_number, f)
+else:
+    print(f"I know ur fav number, it is: {fav_number}"s)
+'''
+
+# 10-13
+
+
+def get_username():
+    filename = 'username.json'
+    try:
+        with open(filename) as f:
+            username = json.load(f)
+    except FileNotFoundError:
+        return None
+    else:
+        return username
+
+
+def get_new_username():
+    filename = 'username.json'
+    username = input("what's ur username? ")
+    with open(filename, 'w') as f:
+        json.dump(username, f)
+    return username
+
+
+def verify_user():
+    username = get_username()
+    username_input = input("login your username: ")
+    if username == username_input:
+        print(f"Welcome back, {username}")
+    else:
+
+        get_new_username()
+
+
+verify_user()
